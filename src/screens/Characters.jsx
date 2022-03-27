@@ -1,15 +1,35 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 
-const Characters = () => {
+import useCharacters from '../hooks/useCharacters';
+import CharacterCard from '../components/CharacterCard';
+
+const Characters = ({ navigation }) => {
+  const { characters } = useCharacters();
+  const numColumns = 2;
+
+  const renderItem = ({ item }) => {
+    return <CharacterCard character={item} navigation={navigation} />;
+  };
+
   return (
-    <SafeAreaView>
-      <Text>Characters Screen</Text>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={characters}
+        keyExtractor={(character) => character.id}
+        renderItem={renderItem}
+        numColumns={numColumns}
+      />
     </SafeAreaView>
   );
 };
 
 export default Characters;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginVertical: 12,
+  },
+});
